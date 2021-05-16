@@ -17,7 +17,7 @@ package org.tensorflow.lite.examples.posenet
 
 /** Utility class for manipulating images.  */
 object ImageUtils {
-  // This value is 2 ^ 18 - 1, and is used to hold the RGB values together before their ranges
+  // This value is 2 ^ 18 - 1, and is used to hold the RGB va lues together before their ranges
   // are normalized to eight bits.
   private const val MAX_CHANNEL_VALUE = 262143
 
