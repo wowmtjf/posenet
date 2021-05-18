@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\examples-master\\lite\\examples\\posenet\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
+            "outputFile": "C:\\Users\\RIYE\\AndroidStudioProjects\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\wowmt\\.gradle\\caches\\transforms-2\\files-2.1\\dbdfae876c28cd46ba7f345b710711fc\\appcompat-1.2.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\RIYE\\.gradle\\caches\\transforms-2\\files-2.1\\c9d27f60389667d4584ecb2776d32bd6\\appcompat-1.1.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

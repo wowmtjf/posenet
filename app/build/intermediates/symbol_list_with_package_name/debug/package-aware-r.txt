@@ -399,6 +399,9 @@ color bright_foreground_material_dark
 color bright_foreground_material_light
 color button_material_dark
 color button_material_light
+color colorAccent
+color colorPrimary
+color colorPrimaryDark
 color dim_foreground_disabled_material_dark
 color dim_foreground_disabled_material_light
 color dim_foreground_material_dark
@@ -679,6 +682,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable splash_background
 drawable tfl2_logo
 drawable tfl2_logo_dark
 drawable tooltip_frame_dark
@@ -810,6 +814,7 @@ id radio
 id right
 id right_icon
 id right_side
+id score_btn
 id screen
 id scrollIndicatorDown
 id scrollIndicatorUp
@@ -865,6 +870,8 @@ id unchecked
 id uniform
 id up
 id useLogo
+id webView
+id webview_btn
 id withText
 id wrap
 id wrap_content
@@ -908,6 +915,8 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_main
+layout activity_webview
 layout custom_dialog
 layout notification_action
 layout notification_action_tombstone
@@ -918,6 +927,7 @@ layout notification_template_part_time
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
+layout splash_background
 layout support_simple_spinner_dropdown_item
 layout tfe_pn_activity_camera
 layout tfe_pn_activity_posenet
@@ -1147,6 +1157,7 @@ style RtlOverlay_Widget_AppCompat_Search_DropDown_Text
 style RtlOverlay_Widget_AppCompat_SearchView_MagIcon
 style RtlUnderlay_Widget_AppCompat_ActionButton
 style RtlUnderlay_Widget_AppCompat_ActionButton_Overflow
+style SplashTheme
 style TextAppearance_AppCompat
 style TextAppearance_AppCompat_Body1
 style TextAppearance_AppCompat_Body2
