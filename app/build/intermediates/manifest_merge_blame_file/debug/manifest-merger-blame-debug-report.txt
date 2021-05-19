@@ -26,7 +26,7 @@
 15-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:10:17-65
 16
 17    <application
-17-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:14:1-60:17
+17-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:14:1-55:15
 18        android:allowBackup="true"
 18-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:15:7-33
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -98,13 +98,6 @@
 55            android:exported="true" >
 55-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:52:9-32
 56        </activity>
-57        <activity
-57-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:55:5-58:16
-58            android:name="org.tensorflow.lite.examples.posenet.WebViewActivity"
-58-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:56:9-40
-59            android:exported="true" >
-59-->C:\Users\RIYE\AndroidStudioProjects\app\src\main\AndroidManifest.xml:57:9-32
-60        </activity>
-61    </application>
-62
-63</manifest>
+57    </application>
+58
+59</manifest>
