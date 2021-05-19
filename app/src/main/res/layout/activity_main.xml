@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/saved_vid_btn"
-        android:layout_width="match_parent*0.7"
+        android:layout_width="match_parent"
         android:layout_height="145dp"
         android:text="저장된 영상"
         android:onClick="ClickButton2"

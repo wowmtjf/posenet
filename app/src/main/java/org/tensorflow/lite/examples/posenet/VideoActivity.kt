@@ -1,5 +1,3 @@
-package org.tensorflow.lite.examples.posenet;
+package org.tensorflow.lite.examples.posenet
 
-
-public class VideoActivity {
-}
+class VideoActivity 

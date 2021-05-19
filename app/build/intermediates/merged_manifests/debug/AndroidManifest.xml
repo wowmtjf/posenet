@@ -54,10 +54,6 @@
             android:name="org.tensorflow.lite.examples.posenet.CameraActivity"
             android:exported="true" >
         </activity>
-        <activity
-            android:name="org.tensorflow.lite.examples.posenet.WebViewActivity"
-            android:exported="true" >
-        </activity>
     </application>
 
 </manifest>
