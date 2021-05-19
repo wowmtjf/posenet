@@ -1,11 +1,2 @@
-org/tensorflow/lite/examples/posenet/ScoreActivity.java
- org.tensorflow.lite.examples.posenet.ScoreActivity
-org/tensorflow/lite/examples/posenet/SplashActivity.java
- org.tensorflow.lite.examples.posenet.SplashActivity
- org.tensorflow.lite.examples.posenet.SplashActivity$1
-org/tensorflow/lite/examples/posenet/MainActivity.java
- org.tensorflow.lite.examples.posenet.MainActivity
-org/tensorflow/lite/examples/posenet/WebViewActivity.java
- org.tensorflow.lite.examples.posenet.WebViewActivity
 org/tensorflow/lite/examples/posenet/BuildConfig.java
  org.tensorflow.lite.examples.posenet.BuildConfig
