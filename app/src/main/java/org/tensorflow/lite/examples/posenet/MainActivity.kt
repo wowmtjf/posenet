@@ -2,8 +2,6 @@ package org.tensorflow.lite.examples.posenet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.Intent
-import android.view.View
 import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -27,7 +25,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, PosenetActivity())
                 .commit()
         }
-
     }
     override fun onBackPressed() {
         val youtubeView:WebView =findViewById(R.id.youtubeView)
@@ -37,6 +34,5 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
 
 }
