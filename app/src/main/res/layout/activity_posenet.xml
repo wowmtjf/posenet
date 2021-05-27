@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,41 +8,13 @@
     <WebView
         android:id="@+id/youtubeView"
         android:layout_width="match_parent"
-        android:layout_height="350dp">
-    </WebView>
+        android:layout_height="400dp"></WebView>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <SurfaceView
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="match_parent"
         android:background="@android:color/black"
         tools:context="org.tensorflow.lite.examples.posenet.CameraActivity">
-    </SurfaceView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cam_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:text="카메라 전환" />
-
-        <Button
-            android:id="@+id/rec_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:text="점수 기록"  />
-    </LinearLayout>
     </FrameLayout>
-
 </LinearLayout>

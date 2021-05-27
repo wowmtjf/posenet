@@ -5,104 +5,88 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-7-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:11:5-17
+7-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:12:3-15
 8        android:minSdkVersion="21"
-8-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:11:5-17
+8-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:12:3-15
 9        android:targetSdkVersion="23" />
-9-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:11:5-17
+9-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:12:3-15
 10
 11    <uses-permission android:name="android.permission.CAMERA" />
-11-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:5:5-65
-11-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:5:22-62
+11-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:6:3-63
+11-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:6:20-60
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:6:5-67
-12-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:6:22-64
+12-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:7:3-65
+12-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:7:20-62
 13
 14    <uses-feature android:name="android.hardware.camera" />
-14-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:8:5-60
-14-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:8:19-57
+14-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:9:3-58
+14-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:9:17-55
 15    <uses-feature android:name="android.hardware.camera.autofocus" />
-15-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:9:5-70
-15-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:9:19-67
-16    <uses-feature
-16-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:10:5-91
-17        android:name="android.hardware.camera.front"
-17-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:10:19-63
-18        android:required="false" />
-18-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:10:64-88
-19
-20    <application
-20-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:13:1-54:15
-21        android:allowBackup="true"
-21-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:14:7-33
-22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-22-->[androidx.core:core:1.1.0] C:\Users\RIYE\.gradle\caches\transforms-2\files-2.1\d26b161ef3ee65e0a3d887e0b7532912\core-1.1.0\AndroidManifest.xml:24:18-86
-23        android:debuggable="true"
-24        android:icon="@mipmap/ic_launcher"
-24-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:15:7-41
-25        android:label="Posenet_Demo"
-25-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:16:7-35
-26        android:roundIcon="@mipmap/ic_launcher_round"
-26-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:17:7-52
-27        android:supportsRtl="true"
-27-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:18:7-33
-28        android:testOnly="true"
-29        android:theme="@style/AppTheme.Posenet" >
-29-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:19:7-46
-30        <meta-data
-30-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:21:5-23:31
-31            android:name="android.max_aspect"
-31-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:22:9-42
-32            android:value="2.1" />
-32-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:23:9-28
-33
-34        <!--
-35    <activity
-36        android:name=".SplashActivity"
-37        android:theme="@style/SplashTheme"
-38        android:configChanges="orientation|screenSize|keyboardHidden"
-39        android:screenOrientation="portrait"
-40        tools:ignore="Instantiatable">
-41    </activity>
-42        -->
-43
-44        <activity
-44-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:33:5-41:16
-45            android:name="org.tensorflow.lite.examples.posenet.MainActivity"
-45-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:34:9-37
-46            android:exported="true" >
-46-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:35:9-32
-47            <intent-filter>
-47-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:36:9-40:25
-48                <action android:name="android.intent.action.MAIN" />
-48-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:37:13-65
-48-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:37:21-62
-49
-50                <category android:name="android.intent.category.LAUNCHER" />
-50-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:38:13-73
-50-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:38:23-70
-51
-52                <action android:name="android.intent.action.VIEW" />
-52-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:39:13-65
-52-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:39:21-62
-53            </intent-filter>
-54        </activity>
-55        <activity
-55-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:43:5-47:16
-56            android:name="org.tensorflow.lite.examples.posenet.TestActivity"
-56-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:44:9-37
-57            android:exported="true"
-57-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:46:9-32
-58            android:label="@string/tfe_pn_app_name" >
-58-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:45:9-48
-59        </activity>
-60        <activity
-60-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:49:5-52:16
-61            android:name="org.tensorflow.lite.examples.posenet.CameraActivity"
-61-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:50:9-39
-62            android:exported="true" >
-62-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:51:9-32
-63        </activity>
-64    </application>
-65
-66</manifest>
+15-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:10:3-68
+15-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:10:17-65
+16
+17    <application
+17-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:14:1-47:15
+18        android:allowBackup="true"
+18-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:15:7-33
+19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+19-->[androidx.core:core:1.1.0] C:\Users\RIYE\.gradle\caches\transforms-2\files-2.1\d26b161ef3ee65e0a3d887e0b7532912\core-1.1.0\AndroidManifest.xml:24:18-86
+20        android:debuggable="true"
+21        android:icon="@mipmap/ic_launcher"
+21-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:16:7-41
+22        android:label="Posenet_Demo"
+22-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:17:7-35
+23        android:roundIcon="@mipmap/ic_launcher_round"
+23-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:18:7-52
+24        android:supportsRtl="true"
+24-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:19:7-33
+25        android:testOnly="true"
+26        android:theme="@style/AppTheme.Posenet" >
+26-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:20:7-46
+27        <meta-data
+27-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:22:5-24:31
+28            android:name="android.max_aspect"
+28-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:23:9-42
+29            android:value="2.1" />
+29-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:24:9-28
+30
+31        <activity
+31-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:26:5-34:16
+32            android:name="org.tensorflow.lite.examples.posenet.MainActivity"
+32-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:27:9-37
+33            android:exported="true" >
+33-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:28:9-32
+34            <intent-filter>
+34-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:29:9-33:25
+35                <action android:name="android.intent.action.MAIN" />
+35-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:30:13-65
+35-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:30:21-62
+36
+37                <category android:name="android.intent.category.LAUNCHER" />
+37-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:31:13-73
+37-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:31:23-70
+38
+39                <action android:name="android.intent.action.VIEW" />
+39-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:32:13-65
+39-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:32:21-62
+40            </intent-filter>
+41        </activity>
+42        <activity
+42-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:36:5-40:16
+43            android:name="org.tensorflow.lite.examples.posenet.TestActivity"
+43-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:37:9-37
+44            android:exported="true"
+44-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:39:9-32
+45            android:label="@string/tfe_pn_app_name" >
+45-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:38:9-48
+46        </activity>
+47        <activity
+47-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:42:5-45:16
+48            android:name="org.tensorflow.lite.examples.posenet.CameraActivity"
+48-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:43:9-39
+49            android:exported="true" >
+49-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:44:9-32
+50        </activity>
+51    </application>
+52
+53</manifest>

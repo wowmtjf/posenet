@@ -104,10 +104,6 @@
         "source": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\src\\main\\res\\mipmap-hdpi\\ic_action_info.png"
     },
     {
-        "merged": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\build\\intermediates\\res\\merged\\debug\\drawable_splash_background.xml.flat",
-        "source": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\src\\main\\res\\drawable\\splash_background.xml"
-    },
-    {
         "merged": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\build\\intermediates\\res\\merged\\debug\\drawable_button2.xml.flat",
         "source": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\src\\main\\res\\drawable\\button2.xml"
     },

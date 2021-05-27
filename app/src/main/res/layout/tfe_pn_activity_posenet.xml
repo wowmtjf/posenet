@@ -14,6 +14,7 @@
  limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,5 +26,46 @@
       android:layout_alignParentBottom="true"
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"/>
+
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:layout_alignParentTop="true"
+      android:background="@color/tfe_semi_transparent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tfl2_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <ImageButton
+          android:id="@+id/cam_btn"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          app:srcCompat="@drawable/rotation"
+          android:scaleType="fitCenter"
+          android:layout_margin="5dp"
+          android:text="전환" />
+
+      <ImageButton
+          android:id="@+id/rec_btn"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          app:srcCompat="@drawable/rec"
+          android:scaleType="fitCenter"
+          android:layout_margin="5dp"
+          android:text="기록"  />
+    </LinearLayout>
+  </androidx.appcompat.widget.Toolbar>
+
+
 
 </RelativeLayout>
