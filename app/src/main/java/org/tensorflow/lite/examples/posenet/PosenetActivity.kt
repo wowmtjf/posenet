@@ -465,7 +465,7 @@ class PosenetActivity :
 
   /** Set the paint color and size.    */
   private fun setPaint() {
-    paint.color = Color.RED
+    paint.color = Color.WHITE
     paint.textSize = 80.0f
     paint.strokeWidth = 8.0f
   }
@@ -531,12 +531,12 @@ class PosenetActivity :
     }
 
     canvas.drawText(
-      "Score: %.2f".format(person.score),
+      "자세점수: %.2f".format(person.score),
       (15.0f * widthRatio),
-      (30.0f * heightRatio + bottom),
+      (30.0f * heightRatio),
       paint
     )
-    canvas.drawText(
+   /* canvas.drawText(
       "Device: %s".format(posenet.device),
       (15.0f * widthRatio),
       (50.0f * heightRatio + bottom),
@@ -547,7 +547,7 @@ class PosenetActivity :
       (15.0f * widthRatio),
       (70.0f * heightRatio + bottom),
       paint
-    )
+    )*/
 
     // Draw!
     surfaceHolder!!.unlockCanvasAndPost(canvas)

@@ -26,7 +26,7 @@
 15-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:10:17-65
 16
 17    <application
-17-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:14:1-55:15
+17-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:14:1-57:15
 18        android:allowBackup="true"
 18-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:15:7-33
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -91,11 +91,11 @@
 55-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:46:9-48
 56        </activity>
 57        <activity
-57-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:50:5-53:16
-58            android:name="org.tensorflow.lite.examples.posenet.CameraActivity"
-58-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:51:9-39
+57-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:51:5-55:16
+58            android:name="org.tensorflow.lite.examples.posenet.PosenetActivity"
+58-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:52:9-40
 59            android:exported="true" >
-59-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:52:9-32
+59-->C:\examples-master\lite\examples\posenet\android\app\src\main\AndroidManifest.xml:53:9-32
 60        </activity>
 61    </application>
 62
