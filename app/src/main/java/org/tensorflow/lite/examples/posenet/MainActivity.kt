@@ -11,8 +11,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val web_btn=findViewById<Button>(R.id.webview_btn)
-        web_btn.setOnClickListener {
+        val webBtn=findViewById<Button>(R.id.webview_btn)
+        webBtn.setOnClickListener {
             setContentView(R.layout.activity_posenet)
             val youtubeView: WebView =findViewById(R.id.youtubeView)
             youtubeView.apply{
@@ -34,5 +34,4 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
 }

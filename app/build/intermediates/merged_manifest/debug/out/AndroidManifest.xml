@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="21"
-        android:targetSdkVersion="23" />
+        android:targetSdkVersion="30" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,16 +30,6 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
-
-        <!--
-    <activity
-        android:name=".SplashActivity"
-        android:theme="@style/SplashTheme"
-        android:configChanges="orientation|screenSize|keyboardHidden"
-        android:screenOrientation="portrait"
-        tools:ignore="Instantiatable">
-    </activity>
-        -->
 
         <activity
             android:name="org.tensorflow.lite.examples.posenet.MainActivity"

@@ -14,6 +14,7 @@
  limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,5 +26,32 @@
       android:layout_alignParentBottom="true"
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"/>
+
+
+
+
+      <ImageButton
+          android:id="@+id/cam_btn"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          android:layout_margin="5dp"
+          android:layout_weight="2"
+          android:scaleType="fitCenter"
+          android:layout_alignParentRight="true"
+          android:layout_alignParentTop="true"
+          android:text="전환"
+          app:srcCompat="@drawable/rotation" />
+
+  <ImageButton
+      android:id="@+id/rec_btn"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:layout_weight="2"
+      android:scaleType="fitCenter"
+      android:text="기록"
+      app:srcCompat="@drawable/rec" />
+
 
 </RelativeLayout>
