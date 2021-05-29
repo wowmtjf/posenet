@@ -39,6 +39,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_posenet.*
 import kotlinx.android.synthetic.main.tfe_pn_activity_posenet.*
 import org.tensorflow.lite.examples.posenet.lib.BodyPart
 import org.tensorflow.lite.examples.posenet.lib.Person
@@ -243,15 +244,7 @@ class PosenetActivity :
     try {
       for (cameraId in manager.cameraIdList) {
         val characteristics = manager.getCameraCharacteristics(cameraId)
-
-        // We don't use a front facing camera in this sample.
-        val cameraDirection = characteristics.get(CameraCharacteristics.LENS_FACING)
-        if (cameraDirection != null &&
-          cameraDirection == CameraCharacteristics.LENS_FACING_FRONT
-        ) {
-          continue
-        }
-
+0
         previewSize = Size(PREVIEW_WIDTH, PREVIEW_HEIGHT)
 
         imageReader = ImageReader.newInstance(
@@ -261,7 +254,7 @@ class PosenetActivity :
 
         sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)!!
 
-        previewHeight = previewSize!!.height
+          previewHeight = previewSize!!.height
         previewWidth = previewSize!!.width
 
         // Initialize the storage bitmaps once when the resolution is known.
@@ -299,6 +292,7 @@ class PosenetActivity :
     if (cameraId == null) {
       setUpCameraOutputs()
     }
+
     val manager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
     try {
       // Wait for camera to open - 2.5 seconds is sufficient
