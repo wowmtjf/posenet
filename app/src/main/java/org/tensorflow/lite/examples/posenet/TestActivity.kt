@@ -47,7 +47,7 @@ class TestActivity : AppCompatActivity() {
 
     val sampleImageView = findViewById<ImageView>(R.id.image)
     //val sampleImageView=findViewById<WebView>(R.id.youtubeView)
-    val drawedImage = ResourcesCompat.getDrawable(resources, R.drawable.image, null)
+    val drawedImage = ResourcesCompat.getDrawable(resources, R.drawable.lunge, null)
     val imageBitmap = drawableToBitmap(drawedImage!!)
     sampleImageView.setImageBitmap(imageBitmap)
     

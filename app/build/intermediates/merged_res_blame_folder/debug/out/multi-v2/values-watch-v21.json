@@ -4,7 +4,7 @@
             "outputFile": "C:\\examples-master\\lite\\examples\\posenet\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-watch-v21\\values-watch-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\wowmt\\.gradle\\caches\\transforms-2\\files-2.1\\0b37ac187430ff188f194d3db3dedbfe\\appcompat-1.1.0\\res\\values-watch-v21\\values-watch-v21.xml",
+                    "source": "C:\\Users\\wowmt\\.gradle\\caches\\transforms-3\\bd3f81eeee78b558b1f9254a761336a5\\transformed\\appcompat-1.1.0\\res\\values-watch-v21\\values-watch-v21.xml",
                     "from": {
                         "startLines": "2,6,10",
                         "startColumns": "4,4,4",

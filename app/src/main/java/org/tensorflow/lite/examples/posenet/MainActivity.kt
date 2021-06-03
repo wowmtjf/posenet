@@ -6,12 +6,14 @@ import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val webBtn=findViewById<Button>(R.id.webview_btn)
+        val webBtn : Button =findViewById(R.id.webview_btn)
         webBtn.setOnClickListener {
             setContentView(R.layout.activity_posenet)
             val youtubeView: WebView =findViewById(R.id.youtubeView)
@@ -24,7 +26,12 @@ class MainActivity : AppCompatActivity() {
             savedInstanceState ?: supportFragmentManager.beginTransaction()
                 .replace(R.id.container, PosenetActivity())
                 .commit()
+            /*savedInstanceState ?: supportFragmentManager.beginTransaction()
+                    .replace(R.id.youtubeView, VideoActivity())
+                    .commit()*/
+
         }
+
     }
     override fun onBackPressed() {
         val youtubeView:WebView =findViewById(R.id.youtubeView)

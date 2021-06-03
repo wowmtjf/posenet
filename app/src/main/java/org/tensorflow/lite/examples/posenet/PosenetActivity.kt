@@ -19,13 +19,16 @@ package org.tensorflow.lite.examples.posenet
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.camera2.*
+import android.media.CamcorderProfile
 import android.media.Image
 import android.media.ImageReader
 import android.media.ImageReader.OnImageAvailableListener
+import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -35,14 +38,18 @@ import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.*
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.tfe_pn_activity_posenet.*
+import kotlinx.android.synthetic.main.tfe_pn_activity_test.view.*
 import org.tensorflow.lite.examples.posenet.lib.BodyPart
 import org.tensorflow.lite.examples.posenet.lib.Person
 import org.tensorflow.lite.examples.posenet.lib.Posenet
+import java.io.File
+import java.io.IOException
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
@@ -66,6 +73,7 @@ class PosenetActivity :
     Pair(BodyPart.RIGHT_HIP, BodyPart.RIGHT_KNEE),
     Pair(BodyPart.RIGHT_KNEE, BodyPart.RIGHT_ANKLE)
   )
+  private val LOG_TAG = "AudioRecordTest"
 
   /** Threshold for confidence score. */
   private val minConfidence = 0.5
@@ -180,9 +188,61 @@ class PosenetActivity :
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     surfaceView = view.findViewById(R.id.surfaceView)
     surfaceHolder = surfaceView!!.holder
+    var i=0
+    val recordBtn : ImageButton =view.findViewById(R.id.rec_btn)
+    var recorder: MediaRecorder ?=null
+    val path : String = "Desktop"
+    var fileName: String = "C:\\"
 
     cam_btn.setOnClickListener {
       switchCamera()}
+    recordBtn.setOnClickListener {
+      i=1-i
+        if(i==1) {
+          if (recorder != null) {
+            recorder?.stop()
+            recorder?.release()
+            recorder=null
+          }
+          recordBtn.setImageResource(R.drawable.stop)
+          /*recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setVideoSource(MediaRecorder.VideoSource.CAMERA)
+            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFile(fileName+"1.mp4")
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            try {
+              prepare()
+            } catch (e: IOException) {
+              Log.e(LOG_TAG, "prepare() failed")
+            }
+
+            start()
+          }*/
+          recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+          recorder?.setVideoSource(MediaRecorder.VideoSource.CAMERA)
+          recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_2_TS)
+          recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
+          recorder?.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT)
+          recorder?.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH))
+          recorder?.setOutputFile(path+File.separator+"1.mp4")
+          recorder?.setPreviewDisplay(surfaceHolder!!.surface)
+          recorder?.prepare()
+          recorder?.start()
+          Toast.makeText(activity,"녹화시작",Toast.LENGTH_SHORT).show()
+
+        }
+      else{
+        recordBtn.setImageResource(R.drawable.rec)
+          recorder?.stop()
+          recorder?.release()
+          recorder=null
+          Toast.makeText(activity,"저장완료",Toast.LENGTH_SHORT).show()
+
+        }
+
+
+    }
   }
 
   override fun onResume() {
@@ -520,7 +580,7 @@ class PosenetActivity :
     }
 
     canvas.drawText(
-      "포즈점수: %.2f".format(person.score),
+      "포즈점수: %.2f".format(person.score*100),
       (15.0f * widthRatio),
       (30.0f * heightRatio),
       paint
@@ -540,6 +600,7 @@ class PosenetActivity :
 
     // Draw!
     surfaceHolder!!.unlockCanvasAndPost(canvas)
+
   }
 
   /** Process image using Posenet library.   */
@@ -552,6 +613,7 @@ class PosenetActivity :
 
     // Perform inference.
     val person = posenet.estimateSinglePose(scaledBitmap)
+    //val video=posenet.estimatevideopose(scaledBitmap)
     val canvas: Canvas = surfaceHolder!!.lockCanvas()
     draw(canvas, person, scaledBitmap)
   }
