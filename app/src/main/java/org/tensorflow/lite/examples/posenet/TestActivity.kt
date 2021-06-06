@@ -21,13 +21,20 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.media.MediaMetadataRetriever
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
-import android.webkit.WebView
-import androidx.core.content.res.ResourcesCompat
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Handler
 import android.widget.ImageView
-import org.tensorflow.lite.examples.posenet.lib.Posenet as Posenet
+import android.widget.MediaController
+import android.widget.VideoView
+import androidx.appcompat.app.AppCompatActivity
+import org.tensorflow.lite.examples.posenet.lib.Posenet
+import kotlin.concurrent.timer
 
+
+@Suppress("DEPRECATION")
 class TestActivity : AppCompatActivity() {
   /** Returns a resized bitmap of the drawable image.    */
   private fun drawableToBitmap(drawable: Drawable): Bitmap {
@@ -38,36 +45,64 @@ class TestActivity : AppCompatActivity() {
 
     drawable.draw(canvas)
     return bitmap
+
   }
 
   /** Calls the Posenet library functions.    */
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.tfe_pn_activity_test)
+    mediaPlay()
+  }
 
+  private fun mediaPlay() {
+    // 동영상 재생
+    val myVideoView = findViewById<VideoView>(R.id.videoview)
+    val mediaController = MediaController(this)
+    myVideoView.setMediaController(mediaController)
+    mediaController.setAnchorView(myVideoView)
+
+    val video: Uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.video2)
+    myVideoView.setVideoURI(video)
+    myVideoView.requestFocus()
+    myVideoView.start()
+
+    // 이미지 캡쳐
     val sampleImageView = findViewById<ImageView>(R.id.image)
-    //val sampleImageView=findViewById<WebView>(R.id.youtubeView)
-    val drawedImage = ResourcesCompat.getDrawable(resources, R.drawable.image, null)
-    val imageBitmap = drawableToBitmap(drawedImage!!)
-    sampleImageView.setImageBitmap(imageBitmap)
-    
-    val posenet = Posenet(this.applicationContext)
-    val person = posenet.estimateSinglePose(imageBitmap)
+    var mediaMetadataRetriever = MediaMetadataRetriever()
+    mediaMetadataRetriever.setDataSource(this, video)
+    var currentPosition = myVideoView.currentPosition //in millisecond
 
-    // Draw the keypoints over the image.
-    val paint = Paint()
-    paint.color = Color.WHITE
-    val size = 2.0f
+    val mediaPlayer = MediaPlayer.create(this, video)
+    val time = mediaPlayer.duration
 
-    val mutableBitmap = imageBitmap.copy(Bitmap.Config.ARGB_8888, true)
-    val canvas = Canvas(mutableBitmap)
-    for (keypoint in person.keyPoints) {
-      canvas.drawCircle(
-        keypoint.position.x.toFloat(),
-        keypoint.position.y.toFloat(), size, paint
-      )
+    for (i in currentPosition * 10..time * 10 step 100) {
+      timer(period = 100) {
+        val capt = mediaMetadataRetriever.getFrameAtTime((i * 100).toLong())
+        sampleImageView.setImageBitmap(capt)
+/*
+        val posenet = Posenet(this.applicationContext)
+        val person = posenet.estimateSinglePose(capt!!)
+
+        // Draw the keypoints over the image.
+        val paint = Paint()
+        paint.color = Color.WHITE
+        val size = 2.0f
+
+        val mutableBitmap = capt!!.copy(Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(mutableBitmap)
+        for (keypoint in person.keyPoints) {
+          canvas.drawCircle(
+            keypoint.position.x.toFloat(),
+            keypoint.position.y.toFloat(), size, paint
+          )
+        }
+        sampleImageView.adjustViewBounds = true
+        sampleImageView.setImageBitmap(mutableBitmap)
+
+ */
+      }
     }
-    sampleImageView.adjustViewBounds = true
-    sampleImageView.setImageBitmap(mutableBitmap)
   }
 }
+

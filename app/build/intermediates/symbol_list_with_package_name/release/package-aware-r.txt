@@ -870,13 +870,13 @@ id time
 id title
 id titleDividerNoCustom
 id title_template
-id toolbar
 id top
 id topPanel
 id unchecked
 id uniform
 id up
 id useLogo
+id videoview
 id webview_btn
 id withText
 id wrap
@@ -941,6 +941,7 @@ mipmap ic_action_info
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
+raw video2
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description

@@ -30,7 +30,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Process
-import android.provider.MediaStore.MediaColumns.ORIENTATION
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
@@ -182,8 +181,6 @@ class PosenetActivity :
     surfaceView = view.findViewById(R.id.surfaceView)
     surfaceHolder = surfaceView!!.holder
 
-    cam_btn.setOnClickListener {
-      switchCamera()}
   }
 
   override fun onResume() {
@@ -195,6 +192,8 @@ class PosenetActivity :
     super.onStart()
     openCamera()
     posenet = Posenet(this.context!!)
+    cam_btn.setOnClickListener {
+      switchCamera()}
   }
 
   override fun onPause() {
@@ -292,6 +291,13 @@ class PosenetActivity :
     if (cameraId == null) {
       setUpCameraOutputs()
     }
+/*
+    if (cameraId == "1"){
+      container.scaleX = -1f
+      container.translationX = 1f
+    }
+
+ */
 
     val manager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
     try {
@@ -314,7 +320,6 @@ class PosenetActivity :
     if (captureSession == null) {
       return
     }
-
     try {
       cameraOpenCloseLock.acquire()
       captureSession!!.close()
@@ -514,7 +519,7 @@ class PosenetActivity :
     }
 
     canvas.drawText(
-      "포즈점수: %.2f".format(person.score),
+      "포즈점수: %.2f".format(person.score * 100),
       (15.0f * widthRatio),
       (30.0f * heightRatio),
       paint

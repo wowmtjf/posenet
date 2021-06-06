@@ -1,10 +1,5 @@
 package org.tensorflow.lite.examples.posenet
 
-import android.content.Context
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
