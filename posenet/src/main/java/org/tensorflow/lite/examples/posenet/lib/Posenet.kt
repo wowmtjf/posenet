@@ -71,9 +71,9 @@ enum class Device {
 }
 
 class Posenet(
-  val context: Context,
-  val filename: String = "posenet_model.tflite",
-  val device: Device = Device.CPU
+        val context: Context,
+        val filename: String = "posenet_model.tflite",
+        val device: Device = Device.CPU
 ) : AutoCloseable {
   var lastInferenceTimeNanos: Long = -1
     private set
@@ -256,6 +256,88 @@ class Posenet(
           offsets[0][positionY]
           [positionX][idx + numKeypoints]
         ).toInt()
+      confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
+    }
+
+    val person = Person()
+    val keypointList = Array(numKeypoints) { KeyPoint() }
+    var totalScore = 0.0f
+    enumValues<BodyPart>().forEachIndexed { idx, it ->
+      keypointList[idx].bodyPart = it
+      keypointList[idx].position.x = xCoords[idx]
+      keypointList[idx].position.y = yCoords[idx]
+      keypointList[idx].score = confidenceScores[idx]
+      totalScore += confidenceScores[idx]
+    }
+
+    person.keyPoints = keypointList.toList()
+    person.score = totalScore / numKeypoints
+
+    return person
+  }
+  @Suppress("UNCHECKED_CAST")
+  fun estimatevideopose(bitmap: Bitmap): Person {
+    val estimationStartTime= SystemClock.elapsedRealtimeNanos()
+    val inputArray = arrayOf(initInputArray(bitmap))
+    Log.i(
+            "posenet",
+            String.format(
+                    "Scaling to [-1,1] took %.2f ms",
+                    1.0f * (SystemClock.elapsedRealtimeNanos() - estimationStartTime) / 1_000_000
+            )
+    )
+
+    val outputMap = initOutputMap(getInterpreter())
+
+    val inferenceStartTimeNanos = SystemClock.elapsedRealtimeNanos()
+    getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
+    lastInferenceTimeNanos = SystemClock.elapsedRealtimeNanos() - inferenceStartTimeNanos
+    Log.i(
+            "posenet",
+            String.format("Interpreter took %.2f ms", 1.0f * lastInferenceTimeNanos / 1_000_000)
+    )
+
+    val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
+    val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
+
+    val height = heatmaps[0].size
+    val width = heatmaps[0][0].size
+    val numKeypoints = heatmaps[0][0][0].size
+
+    // Finds the (row, col) locations of where the keypoints are most likely to be.
+    val keypointPositions = Array(numKeypoints) { Pair(0, 0) }
+    for (keypoint in 0 until numKeypoints) {
+      var maxVal = heatmaps[0][0][0][keypoint]
+      var maxRow = 0
+      var maxCol = 0
+      for (row in 0 until height) {
+        for (col in 0 until width) {
+          if (heatmaps[0][row][col][keypoint] > maxVal) {
+            maxVal = heatmaps[0][row][col][keypoint]
+            maxRow = row
+            maxCol = col
+          }
+        }
+      }
+      keypointPositions[keypoint] = Pair(maxRow, maxCol)
+    }
+
+    // Calculating the x and y coordinates of the keypoints with offset adjustment.
+    val xCoords = IntArray(numKeypoints)
+    val yCoords = IntArray(numKeypoints)
+    val confidenceScores = FloatArray(numKeypoints)
+    keypointPositions.forEachIndexed { idx, position ->
+      val positionY = keypointPositions[idx].first
+      val positionX = keypointPositions[idx].second
+      yCoords[idx] = (
+              position.first / (height - 1).toFloat() * bitmap.height +
+                      offsets[0][positionY][positionX][idx]
+              ).toInt()
+      xCoords[idx] = (
+              position.second / (width - 1).toFloat() * bitmap.width +
+                      offsets[0][positionY]
+                              [positionX][idx + numKeypoints]
+              ).toInt()
       confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
     }
 

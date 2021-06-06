@@ -35,6 +35,9 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    /*buildFeatures {
+        mlModelBinding true
+    }*/
 }
 
 // Download default models; if you wish to use your own models then
@@ -48,8 +51,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'org.tensorflow:tensorflow-lite:2.2.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.2.0'
+    implementation 'org.tensorflow:tensorflow-lite:2.5.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.5.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
