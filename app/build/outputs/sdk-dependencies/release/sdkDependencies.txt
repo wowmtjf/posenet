@@ -295,20 +295,20 @@ library {
   maven_library {
     groupId: "org.tensorflow"
     artifactId: "tensorflow-lite"
-    version: "2.2.0"
+    version: "2.5.0"
   }
   digests {
-    sha256: "\177\302Du\2301\036L\275\035\315\276w\213\327\216\001\241T\247{\'o\363\255\223\253\233doz\321"
+    sha256: "\350\245A\345P\030\334\362\354\245\257\373\224z\203\352\204\323sL\320yz\021:\246\037\264X\v*\366"
   }
 }
 library {
   maven_library {
     groupId: "org.tensorflow"
     artifactId: "tensorflow-lite-gpu"
-    version: "2.2.0"
+    version: "2.5.0"
   }
   digests {
-    sha256: "M\004{\260\323u\364\277\v\'4s\257.\371f\023[\n\336\253h\311R\331\034\222`9(Hc"
+    sha256: "\333\333\352z\201\305\312\031\307\347\245\241#7\213X\301\003\v\032\365\026\'y\003\364}\252\335\303X\\"
   }
 }
 library {

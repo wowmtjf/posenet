@@ -1,5 +1,6 @@
 package org.tensorflow.lite.examples.posenet
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -26,12 +27,12 @@ class MainActivity : AppCompatActivity() {
             savedInstanceState ?: supportFragmentManager.beginTransaction()
                 .replace(R.id.container, PosenetActivity())
                 .commit()
-            /*savedInstanceState ?: supportFragmentManager.beginTransaction()
-                    .replace(R.id.youtubeView, VideoActivity())
-                    .commit()*/
-
         }
-
+        val vidBtn = findViewById<Button>(R.id.saved_vid_btn)
+        val intent = Intent(this, Test2Activity::class.java)
+        vidBtn.setOnClickListener {
+            startActivity(intent)
+        }
     }
     override fun onBackPressed() {
         val youtubeView:WebView =findViewById(R.id.youtubeView)

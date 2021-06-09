@@ -28,7 +28,6 @@
         android:label="Posenet_Demo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/AppTheme.Posenet" >
         <meta-data
             android:name="android.max_aspect"
@@ -46,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.tensorflow.lite.examples.posenet.TestActivity"
+            android:name="org.tensorflow.lite.examples.posenet.Test2Activity"
             android:exported="true"
             android:label="@string/tfe_pn_app_name" >
         </activity>

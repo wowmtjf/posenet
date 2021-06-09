@@ -9,9 +9,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
-
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
@@ -40,7 +37,7 @@
     </activity>
 
     <activity
-        android:name=".TestActivity"
+        android:name=".Test2Activity"
         android:label="@string/tfe_pn_app_name"
         android:exported="true">
     </activity>

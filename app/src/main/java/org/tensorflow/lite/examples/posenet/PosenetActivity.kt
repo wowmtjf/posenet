@@ -19,7 +19,6 @@ package org.tensorflow.lite.examples.posenet
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -33,7 +32,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Process
-import android.provider.MediaStore.MediaColumns.ORIENTATION
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
@@ -49,7 +47,6 @@ import kotlinx.android.synthetic.main.tfe_pn_activity_test.view.*
 import org.tensorflow.lite.examples.posenet.lib.BodyPart
 import org.tensorflow.lite.examples.posenet.lib.Person
 import org.tensorflow.lite.examples.posenet.lib.Posenet
-import java.io.File
 import java.io.IOException
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
@@ -149,6 +146,9 @@ class PosenetActivity :
   /** Abstract interface to someone holding a display surface.    */
   private var surfaceHolder: SurfaceHolder? = null
 
+  private var recorder: MediaRecorder? = null
+  val path: String = "/sdcard/recorded_video.mp4"  //"Desktop"
+
   /** [CameraDevice.StateCallback] is called when [CameraDevice] changes its state.   */
   private val stateCallback = object : CameraDevice.StateCallback() {
 
@@ -189,397 +189,371 @@ class PosenetActivity :
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     surfaceView = view.findViewById(R.id.surfaceView)
     surfaceHolder = surfaceView!!.holder
-    var i=0
-    val recordBtn : ImageButton =view.findViewById(R.id.rec_btn)
-    var recorder: MediaRecorder ?=null
-    val path : String = "Desktop"
-    var fileName: String = "C:\\"
 
     cam_btn.setOnClickListener {
-      switchCamera()}
+      switchCamera()
+    }
+
+    var i = 0
+    val recordBtn: ImageButton = view.findViewById(R.id.rec_btn)
+
     recordBtn.setOnClickListener {
-      i=1-i
-        if(i==1) {
-          if (recorder != null) {
-            recorder?.stop()
-            recorder?.release()
-            recorder=null
-          }
-          recordBtn.setImageResource(R.drawable.stop)
-          /*recorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setVideoSource(MediaRecorder.VideoSource.CAMERA)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            setOutputFile(fileName+"1.mp4")
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            try {
-              prepare()
-            } catch (e: IOException) {
-              Log.e(LOG_TAG, "prepare() failed")
-            }
-
-            start()
-          }*/
-          recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-          recorder?.setVideoSource(MediaRecorder.VideoSource.CAMERA)
-          recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_2_TS)
-          recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
-          recorder?.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT)
-          recorder?.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH))
-          recorder?.setOutputFile(path+File.separator+"1.mp4")
-          recorder?.setPreviewDisplay(surfaceHolder!!.surface)
-          recorder?.prepare()
-          recorder?.start()
-          Toast.makeText(activity,"녹화시작",Toast.LENGTH_SHORT).show()
-
-        }
-      else{
+      i = 1 - i
+      if (i == 1) {
+        recordBtn.setImageResource(R.drawable.stop)
+        startRecording()
+        Toast.makeText(activity, "녹화시작", Toast.LENGTH_SHORT).show()
+      } else {
         recordBtn.setImageResource(R.drawable.rec)
-          recorder?.stop()
-          recorder?.release()
-          recorder=null
-          Toast.makeText(activity,"저장완료",Toast.LENGTH_SHORT).show()
-
-        }
-
-
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    startBackgroundThread()
-  }
-
-  override fun onStart() {
-    super.onStart()
-    openCamera()
-    posenet = Posenet(this.context!!)
-  }
-
-  override fun onPause() {
-    closeCamera()
-    stopBackgroundThread()
-    super.onPause()
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    posenet.close()
-  }
-
-  private fun requestCameraPermission() {
-    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-      ConfirmationDialog().show(childFragmentManager, FRAGMENT_DIALOG)
-    } else {
-      requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
-    }
-  }
-
-  override fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<String>,
-    grantResults: IntArray
-  ) {
-    if (requestCode == REQUEST_CAMERA_PERMISSION) {
-      if (allPermissionsGranted(grantResults)) {
-        ErrorDialog.newInstance(getString(R.string.tfe_pn_request_permission))
-          .show(childFragmentManager, FRAGMENT_DIALOG)
+        endRecording()
+        Toast.makeText(activity, "저장완료", Toast.LENGTH_SHORT).show()
       }
-    } else {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
   }
+    override fun onResume() {
+      super.onResume()
+      startBackgroundThread()
+    }
 
-  private fun allPermissionsGranted(grantResults: IntArray) = grantResults.all {
-    it == PackageManager.PERMISSION_GRANTED
-  }
+    override fun onStart() {
+      super.onStart()
+      openCamera()
+      posenet = Posenet(this.context!!)
+    }
 
-  /**
-   * Sets up member variables related to camera.
-   */
-  private fun setUpCameraOutputs() {
-    val activity = activity
-    val manager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-    try {
-      for (cameraId in manager.cameraIdList) {
-        val characteristics = manager.getCameraCharacteristics(cameraId)
-0
-        previewSize = Size(PREVIEW_WIDTH, PREVIEW_HEIGHT)
+    override fun onPause() {
+      closeCamera()
+      stopBackgroundThread()
+      super.onPause()
+    }
 
-        imageReader = ImageReader.newInstance(
-          PREVIEW_WIDTH, PREVIEW_HEIGHT,
-          ImageFormat.YUV_420_888, /*maxImages*/ 2
-        )
+    override fun onDestroy() {
+      super.onDestroy()
+      posenet.close()
+    }
 
-        sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)!!
+    private fun requestCameraPermission() {
+      if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+        ConfirmationDialog().show(childFragmentManager, FRAGMENT_DIALOG)
+      } else {
+        requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
+      }
+    }
+
+    override fun onRequestPermissionsResult(
+      requestCode: Int,
+      permissions: Array<String>,
+      grantResults: IntArray
+    ) {
+      if (requestCode == REQUEST_CAMERA_PERMISSION) {
+        if (allPermissionsGranted(grantResults)) {
+          ErrorDialog.newInstance(getString(R.string.tfe_pn_request_permission))
+            .show(childFragmentManager, FRAGMENT_DIALOG)
+        }
+      } else {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+      }
+      /*
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+      permissionToRecordAccepted = if (requestCode == Companion.REQUEST_RECORD_AUDIO_PERMISSION) {
+        grantResults[0] == PackageManager.PERMISSION_GRANTED
+      } else {
+        false
+      }
+
+      */
+    }
+
+    private fun allPermissionsGranted(grantResults: IntArray) = grantResults.all {
+      it == PackageManager.PERMISSION_GRANTED
+    }
+
+    /**
+     * Sets up member variables related to camera.
+     */
+    private fun setUpCameraOutputs() {
+      val activity = activity
+      val manager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+      try {
+        for (cameraId in manager.cameraIdList) {
+          val characteristics = manager.getCameraCharacteristics(cameraId)
+          0
+          previewSize = Size(PREVIEW_WIDTH, PREVIEW_HEIGHT)
+
+          imageReader = ImageReader.newInstance(
+            PREVIEW_WIDTH, PREVIEW_HEIGHT,
+            ImageFormat.YUV_420_888, /*maxImages*/ 2
+          )
+
+          sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)!!
 
           previewHeight = previewSize!!.height
-        previewWidth = previewSize!!.width
+          previewWidth = previewSize!!.width
 
-        // Initialize the storage bitmaps once when the resolution is known.
-        rgbBytes = IntArray(previewWidth * previewHeight)
+          // Initialize the storage bitmaps once when the resolution is known.
+          rgbBytes = IntArray(previewWidth * previewHeight)
 
-        // Check if the flash is supported.
-        flashSupported =
-          characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+          // Check if the flash is supported.
+          flashSupported =
+            characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
 
-        this.cameraId = cameraId
+          this.cameraId = cameraId
 
-        // We've found a viable camera and finished setting up member variables,
-        // so we don't need to iterate through other available cameras.
-        return
+          // We've found a viable camera and finished setting up member variables,
+          // so we don't need to iterate through other available cameras.
+          return
+        }
+      } catch (e: CameraAccessException) {
+        Log.e(TAG, e.toString())
+      } catch (e: NullPointerException) {
+        // Currently an NPE is thrown when the Camera2API is used but not supported on the
+        // device this code runs.
+        ErrorDialog.newInstance(getString(R.string.tfe_pn_camera_error))
+          .show(childFragmentManager, FRAGMENT_DIALOG)
       }
-    } catch (e: CameraAccessException) {
-      Log.e(TAG, e.toString())
-    } catch (e: NullPointerException) {
-      // Currently an NPE is thrown when the Camera2API is used but not supported on the
-      // device this code runs.
-      ErrorDialog.newInstance(getString(R.string.tfe_pn_camera_error))
-        .show(childFragmentManager, FRAGMENT_DIALOG)
-    }
-  }
-  /**
-   * Opens the camera specified by [PosenetActivity.cameraId].
-   */
-  private fun openCamera() {
-    val permissionCamera = getContext()!!.checkPermission(
-      Manifest.permission.CAMERA, Process.myPid(), Process.myUid()
-    )
-    if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
-      requestCameraPermission()
-    }
-    if (cameraId == null) {
-      setUpCameraOutputs()
     }
 
-    val manager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-    try {
-      // Wait for camera to open - 2.5 seconds is sufficient
-      if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
-        throw RuntimeException("Time out waiting to lock camera opening.")
+    /**
+     * Opens the camera specified by [PosenetActivity.cameraId].
+     */
+    private fun openCamera() {
+      val permissionCamera = getContext()!!.checkPermission(
+        Manifest.permission.CAMERA, Process.myPid(), Process.myUid()
+      )
+      if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
+        requestCameraPermission()
       }
-      manager.openCamera(cameraId!!, stateCallback, backgroundHandler)
-    } catch (e: CameraAccessException) {
-      Log.e(TAG, e.toString())
-    } catch (e: InterruptedException) {
-      throw RuntimeException("Interrupted while trying to lock camera opening.", e)
-    }
-  }
-
-  /**
-   * Closes the current [CameraDevice].
-   */
-  private fun closeCamera() {
-    if (captureSession == null) {
-      return
-    }
-
-    try {
-      cameraOpenCloseLock.acquire()
-      captureSession!!.close()
-      captureSession = null
-      cameraDevice!!.close()
-      cameraDevice = null
-      imageReader!!.close()
-      imageReader = null
-    } catch (e: InterruptedException) {
-      throw RuntimeException("Interrupted while trying to lock camera closing.", e)
-    } finally {
-      cameraOpenCloseLock.release()
-    }
-  }
-
-  /**
-   * Starts a background thread and its [Handler].
-   */
-  private fun startBackgroundThread() {
-    backgroundThread = HandlerThread("imageAvailableListener").also { it.start() }
-    backgroundHandler = Handler(backgroundThread!!.looper)
-  }
-
-  /**
-   * Stops the background thread and its [Handler].
-   */
-  private fun stopBackgroundThread() {
-    backgroundThread?.quitSafely()
-    try {
-      backgroundThread?.join()
-      backgroundThread = null
-      backgroundHandler = null
-    } catch (e: InterruptedException) {
-      Log.e(TAG, e.toString())
-    }
-  }
-
-  /** Fill the yuvBytes with data from image planes.   */
-  private fun fillBytes(planes: Array<Image.Plane>, yuvBytes: Array<ByteArray?>) {
-    // Row stride is the total number of bytes occupied in memory by a row of an image.
-    // Because of the variable row stride it's not possible to know in
-    // advance the actual necessary dimensions of the yuv planes.
-    for (i in planes.indices) {
-      val buffer = planes[i].buffer
-      if (yuvBytes[i] == null) {
-        yuvBytes[i] = ByteArray(buffer.capacity())
+      if (cameraId == null) {
+        setUpCameraOutputs()
       }
-      buffer.get(yuvBytes[i]!!)
-    }
-  }
 
-  /** A [OnImageAvailableListener] to receive frames as they are available.  */
-  private var imageAvailableListener = object : OnImageAvailableListener {
-    override fun onImageAvailable(imageReader: ImageReader) {
-      // We need wait until we have some size from onPreviewSizeChosen
-      if (previewWidth == 0 || previewHeight == 0) {
+      val manager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+      try {
+        // Wait for camera to open - 2.5 seconds is sufficient
+        if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
+          throw RuntimeException("Time out waiting to lock camera opening.")
+        }
+        manager.openCamera(cameraId!!, stateCallback, backgroundHandler)
+      } catch (e: CameraAccessException) {
+        Log.e(TAG, e.toString())
+      } catch (e: InterruptedException) {
+        throw RuntimeException("Interrupted while trying to lock camera opening.", e)
+      }
+    }
+
+    /**
+     * Closes the current [CameraDevice].
+     */
+    private fun closeCamera() {
+      if (captureSession == null) {
         return
       }
 
-      val image = imageReader.acquireLatestImage() ?: return
-      fillBytes(image.planes, yuvBytes)
+      try {
+        cameraOpenCloseLock.acquire()
+        captureSession!!.close()
+        captureSession = null
+        cameraDevice!!.close()
+        cameraDevice = null
+        imageReader!!.close()
+        imageReader = null
+      } catch (e: InterruptedException) {
+        throw RuntimeException("Interrupted while trying to lock camera closing.", e)
+      } finally {
+        cameraOpenCloseLock.release()
+      }
+    }
 
-      ImageUtils.convertYUV420ToARGB8888(
-        yuvBytes[0]!!,
-        yuvBytes[1]!!,
-        yuvBytes[2]!!,
-        previewWidth,
-        previewHeight,
-        /*yRowStride=*/ image.planes[0].rowStride,
-        /*uvRowStride=*/ image.planes[1].rowStride,
-        /*uvPixelStride=*/ image.planes[1].pixelStride,
-        rgbBytes
+    /**
+     * Starts a background thread and its [Handler].
+     */
+    private fun startBackgroundThread() {
+      backgroundThread = HandlerThread("imageAvailableListener").also { it.start() }
+      backgroundHandler = Handler(backgroundThread!!.looper)
+    }
+
+    /**
+     * Stops the background thread and its [Handler].
+     */
+    private fun stopBackgroundThread() {
+      backgroundThread?.quitSafely()
+      try {
+        backgroundThread?.join()
+        backgroundThread = null
+        backgroundHandler = null
+      } catch (e: InterruptedException) {
+        Log.e(TAG, e.toString())
+      }
+    }
+
+    /** Fill the yuvBytes with data from image planes.   */
+    private fun fillBytes(planes: Array<Image.Plane>, yuvBytes: Array<ByteArray?>) {
+      // Row stride is the total number of bytes occupied in memory by a row of an image.
+      // Because of the variable row stride it's not possible to know in
+      // advance the actual necessary dimensions of the yuv planes.
+      for (i in planes.indices) {
+        val buffer = planes[i].buffer
+        if (yuvBytes[i] == null) {
+          yuvBytes[i] = ByteArray(buffer.capacity())
+        }
+        buffer.get(yuvBytes[i]!!)
+      }
+    }
+
+    /** A [OnImageAvailableListener] to receive frames as they are available.  */
+    private var imageAvailableListener = object : OnImageAvailableListener {
+      override fun onImageAvailable(imageReader: ImageReader) {
+        // We need wait until we have some size from onPreviewSizeChosen
+        if (previewWidth == 0 || previewHeight == 0) {
+          return
+        }
+
+        val image = imageReader.acquireLatestImage() ?: return
+        fillBytes(image.planes, yuvBytes)
+
+        ImageUtils.convertYUV420ToARGB8888(
+          yuvBytes[0]!!,
+          yuvBytes[1]!!,
+          yuvBytes[2]!!,
+          previewWidth,
+          previewHeight,
+          /*yRowStride=*/ image.planes[0].rowStride,
+          /*uvRowStride=*/ image.planes[1].rowStride,
+          /*uvPixelStride=*/ image.planes[1].pixelStride,
+          rgbBytes
+        )
+
+        // Create bitmap from int array
+        val imageBitmap = Bitmap.createBitmap(
+          rgbBytes, previewWidth, previewHeight,
+          Bitmap.Config.ARGB_8888
+        )
+
+        // Create rotated version for portrait display
+        val rotateMatrix = Matrix()
+        rotateMatrix.postRotate(90.0f)
+
+        val rotatedBitmap = Bitmap.createBitmap(
+          imageBitmap, 0, 0, previewWidth, previewHeight,
+          rotateMatrix, true
+        )
+        image.close()
+
+        processImage(rotatedBitmap)
+      }
+    }
+
+    /** Crop Bitmap to maintain aspect ratio of model input.   */
+    private fun cropBitmap(bitmap: Bitmap): Bitmap {
+      val bitmapRatio = bitmap.height.toFloat() / bitmap.width
+      val modelInputRatio = MODEL_HEIGHT.toFloat() / MODEL_WIDTH
+      var croppedBitmap = bitmap
+
+      // Acceptable difference between the modelInputRatio and bitmapRatio to skip cropping.
+      val maxDifference = 1e-5
+
+      // Checks if the bitmap has similar aspect ratio as the required model input.
+      when {
+        abs(modelInputRatio - bitmapRatio) < maxDifference -> return croppedBitmap
+        modelInputRatio < bitmapRatio -> {
+          // New image is taller so we are height constrained.
+          val cropHeight = bitmap.height - (bitmap.width.toFloat() / modelInputRatio)
+          croppedBitmap = Bitmap.createBitmap(
+            bitmap,
+            0,
+            (cropHeight / 2).toInt(),
+            bitmap.width,
+            (bitmap.height - cropHeight).toInt()
+          )
+        }
+        else -> {
+          val cropWidth = bitmap.width - (bitmap.height.toFloat() * modelInputRatio)
+          croppedBitmap = Bitmap.createBitmap(
+            bitmap,
+            (cropWidth / 2).toInt(),
+            0,
+            (bitmap.width - cropWidth).toInt(),
+            bitmap.height
+          )
+        }
+      }
+      return croppedBitmap
+    }
+
+    /** Set the paint color and size.    */
+    private fun setPaint() {
+      paint.color = Color.WHITE
+      paint.textSize = 80.0f
+      paint.strokeWidth = 5.0f
+    }
+
+    /** Draw bitmap on Canvas.   */
+    private fun draw(canvas: Canvas, person: Person, bitmap: Bitmap) {
+      canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+      // Draw `bitmap` and `person` in square canvas.
+      val screenWidth: Int
+      val screenHeight: Int
+      val left: Int
+      val right: Int
+      val top: Int
+      val bottom: Int
+      if (canvas.height > canvas.width) {
+        screenWidth = canvas.width
+        screenHeight = canvas.width
+        left = 0
+        top = (canvas.height - canvas.width) / 2
+      } else {
+        screenWidth = canvas.height
+        screenHeight = canvas.height
+        left = (canvas.width - canvas.height) / 2
+        top = 0
+      }
+      right = left + screenWidth
+      bottom = top + screenHeight
+
+      setPaint()
+      canvas.drawBitmap(
+        bitmap,
+        Rect(0, 0, bitmap.width, bitmap.height),
+        Rect(left, top, right, bottom),
+        paint
       )
 
-      // Create bitmap from int array
-      val imageBitmap = Bitmap.createBitmap(
-        rgbBytes, previewWidth, previewHeight,
-        Bitmap.Config.ARGB_8888
+      val widthRatio = screenWidth.toFloat() / MODEL_WIDTH
+      val heightRatio = screenHeight.toFloat() / MODEL_HEIGHT
+
+      // Draw key points over the image.
+      for (keyPoint in person.keyPoints) {
+        if (keyPoint.score > minConfidence) {
+          val position = keyPoint.position
+          val adjustedX: Float = position.x.toFloat() * widthRatio + left
+          val adjustedY: Float = position.y.toFloat() * heightRatio + top
+          canvas.drawCircle(adjustedX, adjustedY, circleRadius, paint)
+        }
+      }
+
+      for (line in bodyJoints) {
+        if (
+          (person.keyPoints[line.first.ordinal].score > minConfidence) and
+          (person.keyPoints[line.second.ordinal].score > minConfidence)
+        ) {
+          canvas.drawLine(
+            person.keyPoints[line.first.ordinal].position.x.toFloat() * widthRatio + left,
+            person.keyPoints[line.first.ordinal].position.y.toFloat() * heightRatio + top,
+            person.keyPoints[line.second.ordinal].position.x.toFloat() * widthRatio + left,
+            person.keyPoints[line.second.ordinal].position.y.toFloat() * heightRatio + top,
+            paint
+          )
+        }
+      }
+
+      canvas.drawText(
+        "포즈점수: %.2f".format(person.score * 100),
+        (15.0f * widthRatio),
+        (30.0f * heightRatio),
+        paint
       )
-
-      // Create rotated version for portrait display
-      val rotateMatrix = Matrix()
-      rotateMatrix.postRotate(90.0f)
-
-      val rotatedBitmap = Bitmap.createBitmap(
-        imageBitmap, 0, 0, previewWidth, previewHeight,
-        rotateMatrix, true
-      )
-      image.close()
-
-      processImage(rotatedBitmap)
-    }
-  }
-
-  /** Crop Bitmap to maintain aspect ratio of model input.   */
-  private fun cropBitmap(bitmap: Bitmap): Bitmap {
-    val bitmapRatio = bitmap.height.toFloat() / bitmap.width
-    val modelInputRatio = MODEL_HEIGHT.toFloat() / MODEL_WIDTH
-    var croppedBitmap = bitmap
-
-    // Acceptable difference between the modelInputRatio and bitmapRatio to skip cropping.
-    val maxDifference = 1e-5
-
-    // Checks if the bitmap has similar aspect ratio as the required model input.
-    when {
-      abs(modelInputRatio - bitmapRatio) < maxDifference -> return croppedBitmap
-      modelInputRatio < bitmapRatio -> {
-        // New image is taller so we are height constrained.
-        val cropHeight = bitmap.height - (bitmap.width.toFloat() / modelInputRatio)
-        croppedBitmap = Bitmap.createBitmap(
-          bitmap,
-          0,
-          (cropHeight / 2).toInt(),
-          bitmap.width,
-          (bitmap.height - cropHeight).toInt()
-        )
-      }
-      else -> {
-        val cropWidth = bitmap.width - (bitmap.height.toFloat() * modelInputRatio)
-        croppedBitmap = Bitmap.createBitmap(
-          bitmap,
-          (cropWidth / 2).toInt(),
-          0,
-          (bitmap.width - cropWidth).toInt(),
-          bitmap.height
-        )
-      }
-    }
-    return croppedBitmap
-  }
-
-  /** Set the paint color and size.    */
-  private fun setPaint() {
-    paint.color = Color.WHITE
-    paint.textSize = 80.0f
-    paint.strokeWidth = 5.0f
-  }
-
-  /** Draw bitmap on Canvas.   */
-  private fun draw(canvas: Canvas, person: Person, bitmap: Bitmap) {
-    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-    // Draw `bitmap` and `person` in square canvas.
-    val screenWidth: Int
-    val screenHeight: Int
-    val left: Int
-    val right: Int
-    val top: Int
-    val bottom: Int
-    if (canvas.height > canvas.width) {
-      screenWidth = canvas.width
-      screenHeight = canvas.width
-      left = 0
-      top = (canvas.height - canvas.width) / 2
-    } else {
-      screenWidth = canvas.height
-      screenHeight = canvas.height
-      left = (canvas.width - canvas.height) / 2
-      top = 0
-    }
-    right = left + screenWidth
-    bottom = top + screenHeight
-
-    setPaint()
-    canvas.drawBitmap(
-      bitmap,
-      Rect(0, 0, bitmap.width, bitmap.height),
-      Rect(left, top, right, bottom),
-      paint
-    )
-
-    val widthRatio = screenWidth.toFloat() / MODEL_WIDTH
-    val heightRatio = screenHeight.toFloat() / MODEL_HEIGHT
-
-    // Draw key points over the image.
-    for (keyPoint in person.keyPoints) {
-      if (keyPoint.score > minConfidence) {
-        val position = keyPoint.position
-        val adjustedX: Float = position.x.toFloat() * widthRatio + left
-        val adjustedY: Float = position.y.toFloat() * heightRatio + top
-        canvas.drawCircle(adjustedX, adjustedY, circleRadius, paint)
-      }
-    }
-
-    for (line in bodyJoints) {
-      if (
-        (person.keyPoints[line.first.ordinal].score > minConfidence) and
-        (person.keyPoints[line.second.ordinal].score > minConfidence)
-      ) {
-        canvas.drawLine(
-          person.keyPoints[line.first.ordinal].position.x.toFloat() * widthRatio + left,
-          person.keyPoints[line.first.ordinal].position.y.toFloat() * heightRatio + top,
-          person.keyPoints[line.second.ordinal].position.x.toFloat() * widthRatio + left,
-          person.keyPoints[line.second.ordinal].position.y.toFloat() * heightRatio + top,
-          paint
-        )
-      }
-    }
-
-    canvas.drawText(
-      "포즈점수: %.2f".format(person.score*100),
-      (15.0f * widthRatio),
-      (30.0f * heightRatio),
-      paint
-    )
-   /* canvas.drawText(
+      /* canvas.drawText(
       "Device: %s".format(posenet.device),
       (15.0f * widthRatio),
       (50.0f * heightRatio + bottom),
@@ -592,145 +566,171 @@ class PosenetActivity :
       paint
     )*/
 
-    // Draw!
-    surfaceHolder!!.unlockCanvasAndPost(canvas)
+      // Draw!
+      surfaceHolder!!.unlockCanvasAndPost(canvas)
 
-  }
+    }
 
-  /** Process image using Posenet library.   */
-  private fun processImage(bitmap: Bitmap) {
-    // Crop bitmap.
-    val croppedBitmap = cropBitmap(bitmap)
+    /** Process image using Posenet library.   */
+    private fun processImage(bitmap: Bitmap) {
+      // Crop bitmap.
+      val croppedBitmap = cropBitmap(bitmap)
 
-    // Created scaled version of bitmap for model input.
-    val scaledBitmap = Bitmap.createScaledBitmap(croppedBitmap, MODEL_WIDTH, MODEL_HEIGHT, true)
+      // Created scaled version of bitmap for model input.
+      val scaledBitmap = Bitmap.createScaledBitmap(croppedBitmap, MODEL_WIDTH, MODEL_HEIGHT, true)
 
-    // Perform inference.
-    val person = posenet.estimateSinglePose(scaledBitmap)
-    //val video=posenet.estimatevideopose(scaledBitmap)
-    val canvas: Canvas = surfaceHolder!!.lockCanvas()
-    draw(canvas, person, scaledBitmap)
-  }
+      // Perform inference.
+      val person = posenet.estimateSinglePose(scaledBitmap)
+      //val video=posenet.estimatevideopose(scaledBitmap)
+      val canvas: Canvas = surfaceHolder!!.lockCanvas()
+      draw(canvas, person, scaledBitmap)
+    }
 
-  /**
-   * Creates a new [CameraCaptureSession] for camera preview.
-   */
-  private fun createCameraPreviewSession() {
-    try {
-      // We capture images from preview in YUV format.
-      imageReader = ImageReader.newInstance(
-        previewSize!!.width, previewSize!!.height, ImageFormat.YUV_420_888, 2
-      )
-      imageReader!!.setOnImageAvailableListener(imageAvailableListener, backgroundHandler)
+    /**
+     * Creates a new [CameraCaptureSession] for camera preview.
+     */
+    private fun createCameraPreviewSession() {
+      try {
+        // We capture images from preview in YUV format.
+        imageReader = ImageReader.newInstance(
+          previewSize!!.width, previewSize!!.height, ImageFormat.YUV_420_888, 2
+        )
+        imageReader!!.setOnImageAvailableListener(imageAvailableListener, backgroundHandler)
 
-      // This is the surface we need to record images for processing.
-      val recordingSurface = imageReader!!.surface
+        // This is the surface we need to record images for processing.
+        val recordingSurface = imageReader!!.surface
 
-      // We set up a CaptureRequest.Builder with the output Surface.
-      previewRequestBuilder = cameraDevice!!.createCaptureRequest(
-        CameraDevice.TEMPLATE_PREVIEW
-      )
-      previewRequestBuilder!!.addTarget(recordingSurface)
+        // We set up a CaptureRequest.Builder with the output Surface.
+        previewRequestBuilder = cameraDevice!!.createCaptureRequest(
+          CameraDevice.TEMPLATE_PREVIEW
+        )
+        previewRequestBuilder!!.addTarget(recordingSurface)
 
-      // Here, we create a CameraCaptureSession for camera preview.
-      cameraDevice!!.createCaptureSession(
-        listOf(recordingSurface),
-        object : CameraCaptureSession.StateCallback() {
-          override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
-            // The camera is already closed
-            if (cameraDevice == null) return
+        // Here, we create a CameraCaptureSession for camera preview.
+        cameraDevice!!.createCaptureSession(
+          listOf(recordingSurface),
+          object : CameraCaptureSession.StateCallback() {
+            override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
+              // The camera is already closed
+              if (cameraDevice == null) return
 
-            // When the session is ready, we start displaying the preview.
-            captureSession = cameraCaptureSession
-            try {
-              // Auto focus should be continuous for camera preview.
-              previewRequestBuilder!!.set(
-                CaptureRequest.CONTROL_AF_MODE,
-                CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
-              )
-              // Flash is automatically enabled when necessary.
-              setAutoFlash(previewRequestBuilder!!)
+              // When the session is ready, we start displaying the preview.
+              captureSession = cameraCaptureSession
+              try {
+                // Auto focus should be continuous for camera preview.
+                previewRequestBuilder!!.set(
+                  CaptureRequest.CONTROL_AF_MODE,
+                  CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
+                )
+                // Flash is automatically enabled when necessary.
+                setAutoFlash(previewRequestBuilder!!)
 
-              // Finally, we start displaying the camera preview.
-              previewRequest = previewRequestBuilder!!.build()
-              captureSession!!.setRepeatingRequest(
-                previewRequest!!,
-                null, null
-              )
-            } catch (e: CameraAccessException) {
-              val e1 = Log.e(TAG, e.toString())
+                // Finally, we start displaying the camera preview.
+                previewRequest = previewRequestBuilder!!.build()
+                captureSession!!.setRepeatingRequest(
+                  previewRequest!!,
+                  null, null
+                )
+              } catch (e: CameraAccessException) {
+                val e1 = Log.e(TAG, e.toString())
+              }
             }
-          }
 
-          override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
-            showToast("Failed")
-          }
-        },
-        null
-      )
-    } catch (e: CameraAccessException) {
-      Log.e(TAG, e.toString())
-    }
-  }
-
-  private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {
-    if (flashSupported) {
-      requestBuilder.set(
-        CaptureRequest.CONTROL_AE_MODE,
-        CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH
-      )
-    }
-  }
-
-  /**
-   * Shows an error message dialog.
-   */
-  class ErrorDialog : DialogFragment() {
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-      AlertDialog.Builder(activity)
-        .setMessage(arguments!!.getString(ARG_MESSAGE))
-        .setPositiveButton(android.R.string.ok) { _, _ -> activity!!.finish() }
-        .create()
-
-    companion object {
-
-      @JvmStatic
-      private val ARG_MESSAGE = "message"
-
-      @JvmStatic
-      fun newInstance(message: String): ErrorDialog = ErrorDialog().apply {
-        arguments = Bundle().apply { putString(ARG_MESSAGE, message) }
+            override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
+              showToast("Failed")
+            }
+          },
+          null
+        )
+      } catch (e: CameraAccessException) {
+        Log.e(TAG, e.toString())
       }
     }
-  }
 
-  companion object {
-    /**
-     * Conversion from screen rotation to JPEG orientation.
-     */
-    private val ORIENTATIONS = SparseIntArray()
-    private val FRAGMENT_DIALOG = "dialog"
-
-    init {
-      ORIENTATIONS.append(Surface.ROTATION_0, 0)
-      ORIENTATIONS.append(Surface.ROTATION_90, 90)
-      ORIENTATIONS.append(Surface.ROTATION_180, 270)
-      ORIENTATIONS.append(Surface.ROTATION_270, 180)
+    private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {
+      if (flashSupported) {
+        requestBuilder.set(
+          CaptureRequest.CONTROL_AE_MODE,
+          CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH
+        )
+      }
     }
 
     /**
-     * Tag for the [Log].
+     * Shows an error message dialog.
      */
-    private const val TAG = "PosenetActivity"
-  }
+    class ErrorDialog : DialogFragment() {
 
-  private fun switchCamera() {
-    onPause()
-    when(cameraId){
-      "0" -> {cameraId = "1"}
-      "1" -> {cameraId = "0"}
+      override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        AlertDialog.Builder(activity)
+          .setMessage(arguments!!.getString(ARG_MESSAGE))
+          .setPositiveButton(android.R.string.ok) { _, _ -> activity!!.finish() }
+          .create()
+
+      companion object {
+
+        @JvmStatic
+        private val ARG_MESSAGE = "message"
+
+        @JvmStatic
+        fun newInstance(message: String): ErrorDialog = ErrorDialog().apply {
+          arguments = Bundle().apply { putString(ARG_MESSAGE, message) }
+        }
+      }
     }
-    onStart()
+
+    companion object {
+      /**
+       * Conversion from screen rotation to JPEG orientation.
+       */
+      private val ORIENTATIONS = SparseIntArray()
+      private val FRAGMENT_DIALOG = "dialog"
+
+      init {
+        ORIENTATIONS.append(Surface.ROTATION_0, 0)
+        ORIENTATIONS.append(Surface.ROTATION_90, 90)
+        ORIENTATIONS.append(Surface.ROTATION_180, 270)
+        ORIENTATIONS.append(Surface.ROTATION_270, 180)
+      }
+
+      /**
+       * Tag for the [Log].
+       */
+      private const val TAG = "PosenetActivity"
+    }
+
+    private fun switchCamera() {
+      onPause()
+      when (cameraId) {
+        "0" -> {
+          cameraId = "1"
+        }
+        "1" -> {
+          cameraId = "0"
+        }
+      }
+      onStart()
+    }
+
+    private fun startRecording() {
+      recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+      recorder?.setVideoSource(MediaRecorder.VideoSource.SURFACE)
+      recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+      recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+      recorder?.setVideoEncoder(MediaRecorder.VideoEncoder.H263)
+      //recorder?.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH))
+
+      recorder?.setOutputFile(path) //+ File.separator + "1.mp4")
+      recorder?.setPreviewDisplay(surfaceHolder!!.surface)
+      recorder?.prepare()
+      recorder?.start()
+    }
+
+  private fun endRecording() {
+    recorder?.apply {
+      stop()
+      release()
+    }
+    recorder = null
   }
 }

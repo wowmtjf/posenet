@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-v22\\values-v22.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\RIYE\\.gradle\\caches\\transforms-2\\files-2.1\\0b37ac187430ff188f194d3db3dedbfe\\appcompat-1.1.0\\res\\values-v22\\values-v22.xml",
+                    "source": "C:\\Users\\RIYE\\.gradle\\caches\\transforms-3\\bd3f81eeee78b558b1f9254a761336a5\\transformed\\appcompat-1.1.0\\res\\values-v22\\values-v22.xml",
                     "from": {
                         "startLines": "2,3,4,9",
                         "startColumns": "4,4,4,4",

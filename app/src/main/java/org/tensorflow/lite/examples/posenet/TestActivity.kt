@@ -22,7 +22,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.webkit.WebView
 import androidx.core.content.res.ResourcesCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
@@ -46,7 +45,6 @@ class TestActivity : AppCompatActivity() {
     setContentView(R.layout.tfe_pn_activity_test)
 
     val sampleImageView = findViewById<ImageView>(R.id.image)
-    //val sampleImageView=findViewById<WebView>(R.id.youtubeView)
     val drawedImage = ResourcesCompat.getDrawable(resources, R.drawable.lunge, null)
     val imageBitmap = drawableToBitmap(drawedImage!!)
     sampleImageView.setImageBitmap(imageBitmap)
