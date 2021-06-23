@@ -44,11 +44,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.tensorflow.lite.examples.posenet.Test2Activity"
-            android:exported="true"
-            android:label="@string/tfe_pn_app_name" >
-        </activity>
-        <activity
             android:name="org.tensorflow.lite.examples.posenet.PosenetActivity"
             android:exported="true" >
         </activity>
