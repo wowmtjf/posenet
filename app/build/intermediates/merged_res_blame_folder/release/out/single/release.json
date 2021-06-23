@@ -1,9 +1,5 @@
 [
     {
-        "merged": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\build\\intermediates\\res\\merged\\release\\raw_video2.mp4.flat",
-        "source": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\src\\main\\res\\raw\\video2.mp4"
-    },
-    {
         "merged": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\build\\intermediates\\res\\merged\\release\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\RIYE\\AndroidStudioProjects\\posenet\\app\\src\\main\\res\\layout\\activity_main.xml"
     },

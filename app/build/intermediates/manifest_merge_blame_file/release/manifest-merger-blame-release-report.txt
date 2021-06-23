@@ -41,7 +41,7 @@
 21-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:14:64-88
 22
 23    <application
-23-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:17:1-50:15
+23-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:17:1-44:15
 24        android:allowBackup="true"
 24-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:18:7-33
 25        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -86,20 +86,11 @@
 45        </activity>
 46        <activity
 46-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:39:5-43:16
-47            android:name="org.tensorflow.lite.examples.posenet.Test2Activity"
-47-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:40:9-38
-48            android:exported="true"
-48-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:42:9-32
-49            android:label="@string/tfe_pn_app_name" >
-49-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:41:9-48
-50        </activity>
-51        <activity
-51-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:45:5-49:16
-52            android:name="org.tensorflow.lite.examples.posenet.PosenetActivity"
-52-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:46:9-40
-53            android:exported="true" >
-53-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:47:9-32
-54        </activity>
-55    </application>
-56
-57</manifest>
+47            android:name="org.tensorflow.lite.examples.posenet.PosenetActivity"
+47-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:40:9-40
+48            android:exported="true" >
+48-->C:\Users\RIYE\AndroidStudioProjects\posenet\app\src\main\AndroidManifest.xml:41:9-32
+49        </activity>
+50    </application>
+51
+52</manifest>

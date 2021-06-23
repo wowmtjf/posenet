@@ -341,6 +341,16 @@ library {
     sha256: "\226\\\027~d\373\330\033\321\322{@+f\357\235{\307\265\313_q\200D\277zE:\274T E"
   }
 }
+library {
+  maven_library {
+    groupId: "androidx.recyclerview"
+    artifactId: "recyclerview"
+    version: "1.1.0"
+  }
+  digests {
+    sha256: "\360\322\265\246}\n\221\356\033\034s\357+cj\201\363V9%\335\321Z\035N\034A\354(\336zO"
+  }
+}
 library_dependencies {
   library_dep_index: 1
 }
@@ -500,10 +510,18 @@ library_dependencies {
   library_index: 32
   library_dep_index: 33
 }
+library_dependencies {
+  library_index: 34
+  library_dep_index: 5
+  library_dep_index: 6
+  library_dep_index: 20
+  library_dep_index: 11
+}
 module_dependencies {
   module_name: "base"
   dependency_index: 0
   dependency_index: 32
+  dependency_index: 34
   dependency_index: 4
   dependency_index: 28
   dependency_index: 31

@@ -76,32 +76,35 @@ class MainActivity : AppCompatActivity() {
                 val size = 1.0f
 
                 val posenet = Posenet(this.applicationContext)
-                timer(period = 1000) {
-                    runOnUiThread {
-                        currentPosition = videoView.currentPosition //in millisecond
-                        cap = mediaMetadataRetriever.getFrameAtTime((currentPosition * 1000).toLong(), MediaMetadataRetriever.OPTION_PREVIOUS_SYNC)!!
-                        var cap_drawable = BitmapDrawable(resources, cap)
-                        val imageBitmap = drawableToBitmap(cap_drawable)
-                        sampleImageView.setImageBitmap(imageBitmap)
+                for (i in 100 ..10000000 step 100){
+                    timer(period = 1000) {
+                        runOnUiThread {
+                            currentPosition = videoView.currentPosition //in millisecond
+                            cap =
+                                mediaMetadataRetriever.getFrameAtTime((currentPosition * 1000).toLong())!!
+                            var cap_drawable = BitmapDrawable(resources, cap)
+                            val imageBitmap = drawableToBitmap(cap_drawable)
+                            sampleImageView.setImageBitmap(imageBitmap)
 
-                        val person = posenet.estimateSinglePose(imageBitmap)
+                            val person = posenet.estimateSinglePose(imageBitmap)
 
-                        val mutableBitmap = imageBitmap.copy(Bitmap.Config.ARGB_8888, true)
-                        val canvas = Canvas(mutableBitmap)
-                        for (keypoint in person.keyPoints) {
-                            canvas.drawCircle(
-                                keypoint.position.x.toFloat(),
-                                keypoint.position.y.toFloat(), size, paint
-                            )
+                            val mutableBitmap = imageBitmap.copy(Bitmap.Config.ARGB_8888, true)
+                            val canvas = Canvas(mutableBitmap)
+                            for (keypoint in person.keyPoints) {
+                                canvas.drawCircle(
+                                    keypoint.position.x.toFloat(),
+                                    keypoint.position.y.toFloat(), size, paint
+                                )
+                            }
+                            sampleImageView.adjustViewBounds = true
+                            sampleImageView.setImageBitmap(mutableBitmap)
                         }
-                        sampleImageView.adjustViewBounds = true
-                        sampleImageView.setImageBitmap(mutableBitmap)
                     }
                 }
+            }
 
             }
         }
-    }
 
     override fun onBackPressed() {
         val youtubeView: WebView = findViewById(R.id.youtubeView)
